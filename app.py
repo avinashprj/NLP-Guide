@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 from streamlit_option_menu import option_menu
 
 
-st.title('Twitter sentimental analysis')
+st.title('Sentimental analysis')
 selected = option_menu(
-            menu_title=None,  
-            options=["Topic/Hashtag Analysis", "User Analysis"],  
-            icons=["bar-chart", "info-circle"],  
-            menu_icon="cast",  
-            default_index=0,  
+            menu_title=None,
+            options=["Topic/Hashtag Analysis", "User Analysis"],
+            icons=["bar-chart", "info-circle"],
+            menu_icon="cast",
+            default_index=0,
             orientation="horizontal",
         )
 
@@ -32,7 +32,7 @@ if(selected=='Topic/Hashtag Analysis'):
             if i==30:
                 break
             attributes_container.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang])
-            
+
          tweets_df1 = pd.DataFrame(attributes_container, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets","Tweet_lang"])
         #  tweets_df=tweets_df1[tweets_df1["Tweet_lang"]=="en"]
         #  print(tweets_df)
@@ -41,14 +41,14 @@ if(selected=='Topic/Hashtag Analysis'):
 
          def sentiment_scores(sentence):
 
-            
+
             sid_obj = SentimentIntensityAnalyzer()
 
             sentiment_dict = sid_obj.polarity_scores(sentence)
 
             print(sentiment_dict)
 
-            
+
             if sentiment_dict['compound'] >= 0.05 :
                 st.write("🙂 Positive")
 
@@ -58,12 +58,12 @@ if(selected=='Topic/Hashtag Analysis'):
             else :
                 st.write("😐 Neutral")
          tweets=tweets_df1['Tweets']
-         analyzer=SentimentIntensityAnalyzer()    
+         analyzer=SentimentIntensityAnalyzer()
          tweetsWithSent = []
-        
+
          for i in range(30):
             if i==30:
-                break   
+                break
             text = (tweets[i])
             ps = analyzer.polarity_scores(text)
             if ps['compound'] >= 0.05 :
@@ -79,7 +79,7 @@ if(selected=='Topic/Hashtag Analysis'):
                 sentiment="😐 Neutral"
                 value=ps['compound']
                 count=1
-            
+
             tweetsWithSent.append([text,sentiment,value,count])
          print(tweetsWithSent)
          tweetsWithSent_df=pd.DataFrame(tweetsWithSent,columns=['Tweets','Sentiment','value','count'])
@@ -87,36 +87,36 @@ if(selected=='Topic/Hashtag Analysis'):
          col1, col2, col3 = st.columns(3)
          if col2.button('Analyse twitter topics'):
             #  if st.checkbox('show tweets'):
-                 st.write(tweetsWithSent_df.head(10))  
+                 st.write(tweetsWithSent_df.head(10))
             #  if st.checkbox('show visualization'):
                  draw=px.bar(tweetsWithSent_df,x='Sentiment',y='count',color='Sentiment',title='Sentiment graph of user tweets',hover_data=['value'])
                  st.plotly_chart(draw, use_container_width=True)
-         
 
-        
-       
+
+
+
 elif(selected=='User Analysis'):
-    
+
         st.subheader('User profile analyser')
 
-        username=st.text_input('Enter username','I_am_prathik')
+        username=st.text_input('Enter username','realDonaldTrump')
 
         attributes_container1=[]
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:${username}').get_items()):
             if i==30:
                 break
             attributes_container1.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang,tweet.hashtags])
-                
+
         tweets_df2 = pd.DataFrame(attributes_container1, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets","Tweet_lang","Hashtags"])
-            
+
         print(tweets_df2)
         tweets=tweets_df2['Tweets']
-        analyzer=SentimentIntensityAnalyzer()    
+        analyzer=SentimentIntensityAnalyzer()
         tweetsWithSent = []
-        
+
         for i in range(30):
             if i==30:
-                break   
+                break
             text = (tweets[i])
             ps = analyzer.polarity_scores(text)
             if ps['compound'] >= 0.05 :
@@ -132,7 +132,7 @@ elif(selected=='User Analysis'):
                 sentiment="😐 Neutral"
                 value=ps['compound']
                 count=1
-            
+
             tweetsWithSent.append([text,sentiment,value,count])
         print(tweetsWithSent)
         tweetsWithSent_df=pd.DataFrame(tweetsWithSent,columns=['Tweets','Sentiment','value','count'])
@@ -147,12 +147,12 @@ elif(selected=='User Analysis'):
                 draw=px.bar(tweetsWithSent_df,x='Sentiment',y='count',color='Sentiment',title='Sentiment graph of user tweets',hover_data=['value'])
                 st.plotly_chart(draw, use_container_width=True)
 
-    
-    
-    
 
 
-    
+
+
+
+
 # st.title('Twitter sentimental analysis')
 # st.subheader('Topic/Hashtag analyser')
 # sentence = st.text_input('Enter Topic/Hashtag','War in ukraine')
@@ -164,7 +164,7 @@ elif(selected=='User Analysis'):
 #     if i>300:
 #         break
 #     attributes_container.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang])
-    
+
 # tweets_df1 = pd.DataFrame(attributes_container, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets","Tweet_lang"])
 # tweets_df=tweets_df1[tweets_df1["Tweet_lang"]=="en"]
 # print(tweets_df)
@@ -174,14 +174,14 @@ elif(selected=='User Analysis'):
 
 # def sentiment_scores(sentence):
 
-	
+
 # 	sid_obj = SentimentIntensityAnalyzer()
 
 # 	sentiment_dict = sid_obj.polarity_scores(sentence)
 
 # 	print(sentiment_dict)
 
-	
+
 # 	if sentiment_dict['compound'] >= 0.05 :
 # 		st.write("🙂 Positive")
 
@@ -193,12 +193,12 @@ elif(selected=='User Analysis'):
 
 
 
-# analyzer1=SentimentIntensityAnalyzer()    
+# analyzer1=SentimentIntensityAnalyzer()
 # tweetsWithSent1 = []
 # tweetss=tweets_df['Tweets']
 # for i in range(100):
 #     if i>100:
-#         break   
+#         break
 #     text1 = (tweetss[i])
 #     ps = analyzer1.polarity_scores(text1)
 #     if ps['compound'] >= 0.05 :
@@ -211,7 +211,7 @@ elif(selected=='User Analysis'):
 #     else :
 #         sentiment="😐 Neutral"
 #         value=ps['compound']
-    
+
 #     tweetsWithSent1.append([text1,sentiment,value])
 # print(tweetsWithSent1)
 # tweetsWithSent_df1=pd.DataFrame(tweetsWithSent1,columns=['Tweets','Sentiment','value'])
@@ -224,8 +224,8 @@ elif(selected=='User Analysis'):
 # sentiment_scores(sentence)
 # if st.checkbox('show tweets'):
 #     st.write(tweets_df.head(10))
-    
-    
+
+
 
 # st.subheader('User profile analyser')
 
@@ -236,16 +236,16 @@ elif(selected=='User Analysis'):
 #     if i>100:
 #         break
 #     attributes_container1.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang,tweet.hashtags])
-        
+
 # tweets_df2 = pd.DataFrame(attributes_container1, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets","Tweet_lang","Hashtags"])
-    
+
 # print(tweets_df2)
 # tweets=tweets_df2['Tweets']
-# analyzer=SentimentIntensityAnalyzer()    
+# analyzer=SentimentIntensityAnalyzer()
 # tweetsWithSent = []
 # for i in range(100):
 #     if i>100:
-#         break   
+#         break
 #     text = (tweets[i])
 #     ps = analyzer.polarity_scores(text)
 #     if ps['compound'] >= 0.05 :
@@ -258,7 +258,7 @@ elif(selected=='User Analysis'):
 #     else :
 #         sentiment="😐 Neutral"
 #         value=ps['compound']
-    
+
 #     tweetsWithSent.append([text,sentiment,value])
 # print(tweetsWithSent)
 # tweetsWithSent_df=pd.DataFrame(tweetsWithSent,columns=['Tweets','Sentiment','value'])
@@ -277,7 +277,7 @@ elif(selected=='User Analysis'):
 
 # def sentiment_article(url):
 #     senti=[]
-    
+
 #     goose = Goose()
 #     articles = goose.extract(url)
 #     sentence1 = articles.cleaned_text
@@ -285,7 +285,7 @@ elif(selected=='User Analysis'):
 #     sentiment_dict = sid_obj.polarity_scores([sentence1])
 #     print(sentiment_dict['neg']*100, "% Negative")
 #     print(sentiment_dict['pos']*100, "% Positive")
-#     print("Review Overall Analysis", end = " ") 
+#     print("Review Overall Analysis", end = " ")
 #     if sentiment_dict['compound'] >= 0.05 :
 #         senti.append("Positive")
 #     elif sentiment_dict['compound'] <= -0.05 :
@@ -300,13 +300,13 @@ elif(selected=='User Analysis'):
 
 
 
-   
+
 
 # def hate_speech(sentence):
 #     sonar = Sonar()
 #     detect=sonar.ping(sentence)
 #     st.write(detect['top_class'])
-# hate_speech(sentence)   
+# hate_speech(sentence)
 
 
 # print("\n1st statement :")
