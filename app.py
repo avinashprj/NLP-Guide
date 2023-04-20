@@ -28,7 +28,7 @@ if(selected=='Topic/Hashtag Analysis'):
 
          attributes_container = []
 
-         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(sentence).get_items()):
+         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(sentence,top = True).get_items()):
             if i==30:
                 break
             attributes_container.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang])
@@ -102,7 +102,7 @@ elif(selected=='User Analysis'):
         username=st.text_input('Enter username','realDonaldTrump')
 
         attributes_container1=[]
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:${username}').get_items()):
+        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:${username}',top = True).get_items()):
             if i==30:
                 break
             attributes_container1.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.rawContent, tweet.lang,tweet.hashtags])
